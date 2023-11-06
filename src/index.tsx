@@ -170,7 +170,7 @@ class Maily {
 				parent: node,
 			};
 
-			return this.renderNode(node, options);
+			return this.renderNode(node);
 		});
 
 		const markup = (
@@ -185,27 +185,21 @@ class Maily {
 
 	// `getMappedContent` will call corresponding node type
 	// and return text content
-	private getMappedContent(
-		node: JSONContent,
-		options?: Partial<NodeOptions>
-	): JSX.Element[] {
+	private getMappedContent(node: JSONContent): JSX.Element[] {
 		return (
 			node?.content?.map((childNode) => {
-				return this.renderNode(childNode, options);
+				return this.renderNode(childNode);
 			}) || []
 		);
 	}
 
 	// `renderNode` will call the method of the corresponding node type
-	private renderNode(
-		node: JSONContent,
-		options?: Partial<NodeOptions>
-	): JSX.Element {
+	private renderNode(node: JSONContent): JSX.Element {
 		const type = node.type!;
 
 		if (type in this) {
 			// @ts-ignore
-			return this[node.type]?.(node, options);
+			return this[node.type]?.(node);
 		} else {
 			console.warn(`Node type "${type}" is not supported.`);
 			return <></>;
@@ -235,9 +229,7 @@ class Maily {
 		const { attrs } = node;
 		const alignment = attrs?.textAlign || 'left';
 
-		return (
-			<Text key={generateKey()}>{this.getMappedContent(node, options)}</Text>
-		);
+		return <Text key={generateKey()}>{this.getMappedContent(node)}</Text>;
 	}
 
 	text(node: JSONContent) {
@@ -263,7 +255,7 @@ class Maily {
 
 	strike(text: string): JSX.Element {
 		return (
-			<s key={generateKey()} style={{ textDecoration: 'line-throught' }}>
+			<s key={generateKey()} style={{ textDecoration: 'line-through' }}>
 				{text}
 			</s>
 		);
@@ -298,6 +290,7 @@ const maily = new Maily({
 				{
 					type: 'text',
 					marks: [
+						{ type: 'strike' },
 						{
 							type: 'bold',
 						},
