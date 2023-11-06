@@ -11,6 +11,7 @@ import {
 	Heading,
 	HeadingAs,
 	Hr,
+	Button,
 } from '@react-email/components';
 import { render as reactEmailRender } from '@react-email/render';
 import { cn, generateKey } from './utils';
@@ -425,132 +426,74 @@ class Maily {
 			</li>
 		);
 	}
+
+	button(node: JSONContent, options?: NodeOptions): JSX.Element {
+		const { attrs } = node;
+		const {
+			text,
+			url,
+			variant,
+			buttonColor,
+			textColor,
+			borderRadius,
+			// @TODO: Update the attribute to `textAlign`
+			alignment = 'left',
+		} = attrs || {};
+
+		let radius: string | undefined = '0px';
+		if (borderRadius === 'round') {
+			radius = '9999px';
+		} else if (borderRadius === 'smooth') {
+			radius = '6px';
+		}
+
+		return (
+			<Container
+				key={generateKey()}
+				style={{
+					textAlign: alignment,
+				}}
+			>
+				<Button
+					href={url}
+					className="text-sm font-medium no-underline border-2 border-solid"
+					style={{
+						color: String(textColor),
+						backgroundColor:
+							variant === 'filled' ? String(buttonColor) : 'transparent',
+						borderColor: String(buttonColor),
+						padding: variant === 'filled' ? '12px 34px' : '10px 34px',
+						borderRadius: radius,
+					}}
+				>
+					{text}
+				</Button>
+			</Container>
+		);
+	}
 }
 
 const maily = new Maily({
 	type: 'doc',
 	content: [
 		{
-			type: 'bulletList',
-			content: [
-				{
-					type: 'listItem',
-					attrs: {
-						color: null,
-					},
-					content: [
-						{
-							type: 'paragraph',
-							attrs: {
-								textAlign: 'left',
-							},
-							content: [
-								{
-									type: 'text',
-									text: 'Arik Chakma',
-								},
-							],
-						},
-					],
-				},
-				{
-					type: 'listItem',
-					attrs: {
-						color: null,
-					},
-					content: [
-						{
-							type: 'paragraph',
-							attrs: {
-								textAlign: 'left',
-							},
-							content: [
-								{
-									type: 'text',
-									text: 'Hello Arikko',
-								},
-							],
-						},
-					],
-				},
-				{
-					type: 'listItem',
-					attrs: {
-						color: null,
-					},
-					content: [
-						{
-							type: 'paragraph',
-							attrs: {
-								textAlign: 'left',
-							},
-							content: [
-								{
-									type: 'text',
-									text: 'How Are you?',
-								},
-							],
-						},
-					],
-				},
-			],
+			type: 'button',
+			attrs: {
+				mailboxComponent: 'button',
+				text: 'Try Maily Now →',
+				url: '',
+				alignment: 'right',
+				variant: 'filled',
+				borderRadius: 'round',
+				buttonColor: '#141313',
+				textColor: '#ffffff',
+			},
 		},
 		{
-			type: 'orderedList',
+			type: 'spacer',
 			attrs: {
-				start: 1,
+				height: 'xl',
 			},
-			content: [
-				{
-					type: 'listItem',
-					attrs: {
-						color: null,
-					},
-					content: [
-						{
-							type: 'paragraph',
-							attrs: {
-								textAlign: 'left',
-							},
-							content: [
-								{
-									type: 'text',
-									text: 'Number One',
-								},
-							],
-						},
-					],
-				},
-				{
-					type: 'listItem',
-					attrs: {
-						color: null,
-					},
-					content: [
-						{
-							type: 'paragraph',
-							attrs: {
-								textAlign: 'left',
-							},
-							content: [
-								{
-									type: 'text',
-									text: 'Number ',
-								},
-								{
-									type: 'text',
-									marks: [
-										{
-											type: 'bold',
-										},
-									],
-									text: '2',
-								},
-							],
-						},
-					],
-				},
-			],
 		},
 	],
 });
