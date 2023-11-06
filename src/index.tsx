@@ -363,11 +363,12 @@ class Maily {
 
 	heading(node: JSONContent, options?: NodeOptions): JSX.Element {
 		const { attrs } = node;
-		const { next } = options || {};
+		const { next, prev } = options || {};
 
 		const level = `h${+attrs?.level || 1}`;
 		const alignment = attrs?.textAlign || 'left';
 		const isNextSpacer = next?.type === 'spacer';
+		const isPrevSpacer = prev?.type === 'spacer';
 
 		return (
 			<Heading
@@ -378,6 +379,7 @@ class Maily {
 					'text-3xl font-bold': level === 'h2',
 					'text-2xl leading-[38px] font-semibold': level === 'h3',
 					'mb-0': isNextSpacer,
+					'mt-0': isPrevSpacer,
 				})}
 				style={{
 					textAlign: alignment,
@@ -471,6 +473,26 @@ class Maily {
 			</Container>
 		);
 	}
+
+	spacer(node: JSONContent, options?: NodeOptions): JSX.Element {
+		const { attrs } = node;
+		const { height = 'auto' } = attrs || {};
+		const heights = {
+			sm: '8px',
+			md: '16px',
+			lg: '32px',
+			xl: '64px',
+		};
+
+		return (
+			<Container
+				key={generateKey()}
+				style={{
+					height: heights?.[height as keyof typeof heights] || height,
+				}}
+			/>
+		);
+	}
 }
 
 const maily = new Maily({
@@ -482,7 +504,7 @@ const maily = new Maily({
 				mailboxComponent: 'button',
 				text: 'Try Maily Now →',
 				url: '',
-				alignment: 'right',
+				alignment: 'center',
 				variant: 'filled',
 				borderRadius: 'round',
 				buttonColor: '#141313',
@@ -494,6 +516,19 @@ const maily = new Maily({
 			attrs: {
 				height: 'xl',
 			},
+		},
+		{
+			type: 'heading',
+			attrs: {
+				textAlign: 'left',
+				level: 1,
+			},
+			content: [
+				{
+					type: 'text',
+					text: 'Arik Chakma',
+				},
+			],
 		},
 	],
 });
