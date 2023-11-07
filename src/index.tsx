@@ -533,4 +533,8 @@ const maily = new Maily({
 	],
 });
 
-console.log(maily.render());
+const startAt = performance.now();
+const html = maily.render();
+console.log(html);
+const endAt = performance.now();
+console.log(`Rendered in ${endAt - startAt}ms`);
