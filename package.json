@@ -1,23 +1,42 @@
 {
-  "name": "maily-compiler",
-  "module": "index.ts",
-  "type": "module",
+  "name": "maily",
   "version": "0.0.1",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist/**"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
   "scripts": {
-    "dev": "bun run --watch ./src/index.tsx"
+    "dev": "bun run --watch ./src/index.ts",
+    "clean": "rm -rf dist",
+    "build": "tsup src/index.ts --format esm,cjs --dts --minify",
+    "format:write": "prettier --write \"**/*.{css,js,json,jsx,ts,tsx}\" --cache",
+    "format": "prettier \"**/*.{css,js,json,jsx,ts,tsx}\" --cache"
   },
   "devDependencies": {
     "@types/react": "^18.2.35",
-    "bun-types": "latest"
-  },
-  "peerDependencies": {
+    "bun-types": "latest",
+    "prettier": "^3.0.3",
+    "tsup": "^7.2.0",
     "typescript": "^5.0.0"
   },
   "dependencies": {
     "@react-email/components": "^0.0.11",
     "@react-email/render": "^0.0.9",
-    "@tiptap/core": "^2.1.12",
-    "clsx": "^2.0.0",
-    "tw-to-css": "^0.0.12"
+    "@tiptap/core": "^2.1.12"
   }
 }
