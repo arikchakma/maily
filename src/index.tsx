@@ -474,6 +474,30 @@ class Maily {
 			/>
 		);
 	}
+
+	image(node: JSONContent, options?: NodeOptions): JSX.Element {
+		const { attrs } = node;
+		const { src, alt, title } = attrs || {};
+
+		const { next } = options || {};
+		const isNextSpacer = next?.type === 'spacer';
+
+		return (
+			<Img
+				key={generateKey()}
+				alt={alt || title || 'Image'}
+				title={title || alt || 'Image'}
+				src={src}
+				style={{
+					height: 'auto',
+					width: 'auto',
+					maxWidth: '100%',
+					marginBottom: isNextSpacer ? '0px' : '32px',
+					marginTop: '0px',
+				}}
+			/>
+		);
+	}
 }
 
 const maily = new Maily({
