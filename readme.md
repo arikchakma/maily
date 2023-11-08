@@ -38,6 +38,8 @@ yarn add @arikchakma/maily
 npm install @arikchakma/maily
 ```
 
+<br>
+
 ## Getting started
 
 Convert React components into a HTML string.
