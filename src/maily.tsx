@@ -1,4 +1,3 @@
-import { JSONContent } from '@tiptap/core';
 import {
   Text,
   Html,
@@ -12,9 +11,25 @@ import {
   Button,
   Img,
 } from '@react-email/components';
-import { render as reactEmailRender } from '@react-email/render';
+import {
+  render as reactEmailRender,
+  renderAsync as reactEmailRenderAsync,
+} from '@react-email/render';
 import { generateKey } from './utils';
 import { CSSProperties } from 'react';
+
+export type JSONContent = {
+  type?: string;
+  attrs?: Record<string, any>;
+  content?: JSONContent[];
+  marks?: {
+    type: string;
+    attrs?: Record<string, any>;
+    [key: string]: any;
+  }[];
+  text?: string;
+  [key: string]: any;
+};
 
 interface NodeOptions {
   parent?: JSONContent;
@@ -105,6 +120,16 @@ export class Maily {
   }
 
   render(options?: RenderOptions): string {
+    const markup = this.markup();
+    return reactEmailRender(markup, options);
+  }
+
+  async renderAsync(options?: RenderOptions): Promise<string> {
+    const markup = this.markup();
+    return reactEmailRenderAsync(markup, options);
+  }
+
+  markup() {
     const nodes = this.content?.content || [];
     const jsxNodes = nodes?.map((node, index) => {
       const nodeOptions: NodeOptions = {
@@ -147,7 +172,7 @@ export class Maily {
       </Html>
     );
 
-    return reactEmailRender(markup, options);
+    return markup;
   }
 
   // `getMappedContent` will call corresponding node type

@@ -1,8 +1,11 @@
 {
-  "name": "maily",
+  "name": "@arikchakma/maily",
   "version": "0.0.1",
+  "private": true,
+  "description": "A React email compiler for maily.to",
+  "sideEffects": false,
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
   "files": [
@@ -12,7 +15,7 @@
     ".": {
       "import": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/index.mjs"
+        "default": "./dist/index.js"
       },
       "require": {
         "types": "./dist/index.d.ts",
@@ -20,13 +23,25 @@
       }
     }
   },
+  "license": "MIT",
   "scripts": {
     "dev": "bun run --watch ./src/index.ts",
     "clean": "rm -rf dist",
-    "build": "tsup src/index.ts --format esm,cjs --dts --minify",
+    "build": "bun run clean && tsup",
     "format:write": "prettier --write \"**/*.{css,js,json,jsx,ts,tsx}\" --cache",
     "format": "prettier \"**/*.{css,js,json,jsx,ts,tsx}\" --cache"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arikchakma/maily.git",
+    "directory": "."
+  },
+  "author": "Arik Chakma <arikchangma@gmail.com>",
+  "keywords": [
+    "maily",
+    "react",
+    "email"
+  ],
   "devDependencies": {
     "@types/react": "^18.2.35",
     "bun-types": "latest",
@@ -36,7 +51,9 @@
   },
   "dependencies": {
     "@react-email/components": "^0.0.11",
-    "@react-email/render": "^0.0.9",
-    "@tiptap/core": "^2.1.12"
+    "@react-email/render": "^0.0.9"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
