@@ -14,6 +14,8 @@
     </a>
 </p>
 
+<br>
+
 ## Install
 
 Install `maily` from your command line.
